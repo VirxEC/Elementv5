@@ -1,0 +1,14 @@
+[settings]
+loadout_file = "loadout.toml"
+name = "Element"
+run_command = "..\\venv\\Scripts\\python bot.py"
+run_command_linux = "../venv/bin/python bot.py"
+agent_id = "Rangler/Element"
+
+[details]
+developer = "Rangler"
+description = "A neural network trained with reinforcement learning to play 1v1."
+fun_fact = "Element was trained with RLGym and has played more than 27 years of Rocket League!"
+github = ""
+language = "rlgym"
+tags = [ "1v1" ]

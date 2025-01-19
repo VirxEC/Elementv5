@@ -1,0 +1,4 @@
+rlbot @ git+https://github.com/VirxEC/python-interface@master
+numpy==1.*
+rlgym_compat @ git+https://github.com/JPK314/rlgym-compat@rlgymv2-rlbot-v5
+ncnn==1.0.20241226
