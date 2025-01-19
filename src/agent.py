@@ -1,13 +1,16 @@
 from dataclasses import dataclass
+from pathlib import Path
 
 import numpy as np
 from ncnn import Mat, Net  # type: ignore
 
 
 def load_actor() -> Net:
+    current_folder = Path(__file__).parent
+
     actor = Net()
-    actor.load_param("model.ncnn.param")
-    actor.load_model("model.ncnn.bin")
+    actor.load_param(str(current_folder / "model.ncnn.param"))
+    actor.load_model(str(current_folder / "model.ncnn.bin"))
     return actor
 
 

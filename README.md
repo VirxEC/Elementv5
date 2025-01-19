@@ -59,3 +59,24 @@ terminate called after throwing an instance of 'std::runtime_error'
 ```
 
 This is caused by the inputted numpy array having a dtype of `float64`. Convert it to `float32` before inputting it into the NCNN model.
+
+## Configuring for compilation
+
+- `pip install pyinstaller`
+- `pyinstaller --onefile src/bot.py --paths src --add-data src/model.ncnn.bin:. --add-data src/model.ncnn.param:.`
+  This will create a file called `bot.spec` - you may have to remove `*.spec` from `.gitignore` to commit it.
+- Create `bob.toml` in the same directory as the spec file with the following content:
+  ```toml
+  [[config]]
+  project_name = "Element"
+  bot_configs = ["src/bot.toml"]
+  
+  [config.builder_config]
+  builder_type = "pyinstaller"
+  entry_file = "bot.spec"
+  ```
+  
+  - `project_name` will be the name of your bot's folder in the botpack
+  - `bot_configs` is a list of bot configs that will be included in the botpack
+  - `builder_type` should always be `pyinstaller`
+  - `entry_file` is the name of the spec file
