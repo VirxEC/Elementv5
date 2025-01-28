@@ -51,7 +51,7 @@ class Element(Bot):
                     teammates,
                     key=lambda p: np.linalg.norm(
                         self.game_state.ball.position - p.car_data.position
-                    ),
+                    ), # type: ignore
                 )
 
                 if self.kickoff_seq is None:
@@ -89,12 +89,12 @@ class Element(Bot):
             teammates.sort(
                 key=lambda p: np.linalg.norm(
                     self.game_state.ball.position - p.car_data.position
-                )
+                ) # type: ignore
             )
             opponents.sort(
                 key=lambda p: np.linalg.norm(
                     self.game_state.ball.position - p.car_data.position
-                )
+                ) # type: ignore
             )
 
             # Grab opponent in same "position" as Element relative to it's teammates
