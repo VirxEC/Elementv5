@@ -1,6 +1,6 @@
 [rlbot]
 launcher = "steam"
-auto_start_bots = false
+auto_start_bots = true
 
 [mutators]
 match_length = "Unlimited"

@@ -9,6 +9,6 @@ agent_id = "Rangler/Element"
 developer = "Rangler"
 description = "A neural network trained with reinforcement learning to play 1v1."
 fun_fact = "Element was trained with RLGym and has played more than 27 years of Rocket League!"
-github = ""
+source_link = "https://github.com/VirxEC/Elementv5"
 language = "rlgym"
 tags = [ "1v1" ]
