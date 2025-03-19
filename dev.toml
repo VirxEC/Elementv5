@@ -6,7 +6,7 @@ auto_start_bots = true
 match_length = "Unlimited"
 
 [[cars]]
-config = "src/bot.toml"
+config_file = "src/bot.toml"
 team = 0
 
 [[cars]]
