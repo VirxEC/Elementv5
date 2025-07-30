@@ -112,4 +112,4 @@ ENV/
 
 # RLBot
 RLBotServer*
-ncnn/
+torch-shared/
