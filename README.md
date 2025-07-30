@@ -1,6 +1,6 @@
 # RLBot v5 Element
 
-This project is a fork of the RLBot v4 verison of Element.
+This project is a fork of the RLBot v4 version of Element.
 
 It's aim is to port the bot to RLBot v5 and to use a shared PyTorch dependency so the resulting botpack exe is smaller.
 
@@ -13,7 +13,7 @@ Install the normal bot requirements via `pip install -r requirements.txt`.
 1. Importing the shared botpack PyTorch
     - PyTorch is only imported in `src/agent.py`, making this easy.
         If you `import torch` in many files, just replace every instance with the below snippet -
-        unless you know which import is guarenteed to be ran first.
+        unless you know which import is guaranteed to be ran first.
     - `import torch` was replaced with the following:
 
         ```python
@@ -27,8 +27,8 @@ Install the normal bot requirements via `pip install -r requirements.txt`.
         ```
 
     - If PyTorch is installed in the local environment, that version will be loaded.
-        If a verison in the local environment isn't installed, then it will try to load the botpack PyTorch redistributable.
-    - Packages included in the PyTorch include PyTorch's dependencies downloaded from pip except for numpy, which are:
+        If a version in the local environment isn't installed, then it will try to load the botpack PyTorch redistributable.
+    - Packages included in the redistributable include PyTorch's dependencies downloaded from pip except for numpy, which are:
         1. filelock
         1. fsspec
         1. jinja
