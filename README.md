@@ -22,12 +22,13 @@ Install the normal bot requirements via `pip install -r requirements.txt`.
         except ImportError:
             import sys
 
-            sys.path.insert(0, "../torch-shared")
+            sys.path.insert(0, "../../../torch-archive")
             import torch
         ```
 
     - If PyTorch is installed in the local environment, that version will be loaded.
         If a version in the local environment isn't installed, then it will try to load the botpack PyTorch redistributable.
+        This assumes that the bot is already inside the botpack.
     - Packages included in the redistributable include PyTorch's dependencies downloaded from pip except for numpy, which are:
         1. filelock
         1. fsspec
