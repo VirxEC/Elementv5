@@ -2,4 +2,4 @@ rlbot>=2.0.0.beta
 numpy==2.*
 rlgym_compat @ git+https://github.com/JPK314/rlgym-compat
 --extra-index-url https://download.pytorch.org/whl/cpu
-torch==2.8.0+cpu
+torch==2.4.1+cpu

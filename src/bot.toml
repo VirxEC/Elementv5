@@ -3,6 +3,7 @@
 loadout_file = "loadout.toml"
 name = "Element"
 run_command = "uv run bot.py"
+run_command_linux = "uv run bot.py"
 agent_id = "Rangler/Element"
 
 [details]
