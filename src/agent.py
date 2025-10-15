@@ -8,7 +8,7 @@ except ImportError:
     # assume we're in a botpack environment
     import sys
 
-    sys.path.insert(0, "../../../torch-archive")
+    sys.path.insert(0, "../../torch-archive")
     import torch
 
 import torch.nn as nn

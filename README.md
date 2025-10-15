@@ -22,7 +22,7 @@ Install the normal bot requirements via `pip install -r requirements.txt`.
         except ImportError:
             import sys
 
-            sys.path.insert(0, "../../../torch-archive")
+            sys.path.insert(0, "../../torch-archive")
             import torch
         ```
 

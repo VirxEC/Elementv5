@@ -112,4 +112,4 @@ ENV/
 
 # RLBot
 RLBotServer*
-torch-shared/
+bob_build/
