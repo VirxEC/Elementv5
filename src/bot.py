@@ -10,7 +10,7 @@ from sequences.speedflip import Speedflip
 
 class Element(Bot):
     obs_builder = CustomObs(cars=2)
-    agent = Agent(obs_builder.obs_size)
+    agent = Agent(obs_builder.obs_size, action_categoricals=5, action_bernoullis=3)
     action_trans = np.array([-1, -1, -1, -1, -1, 0, 0, 0])
     tick_skip = 8
     controls = ControllerState()
@@ -51,7 +51,7 @@ class Element(Bot):
                     teammates,
                     key=lambda p: np.linalg.norm(
                         self.game_state.ball.position - p.car_data.position
-                    ), # type: ignore
+                    ),  # type: ignore
                 )
 
                 if self.kickoff_seq is None:
@@ -67,7 +67,7 @@ class Element(Bot):
                     )
                     self.update_controls(self.action)
                     return self.controls
-            except:
+            except Exception:
                 self.logger.error(
                     "Element - Kickoff sequence failed, falling back to model"
                 )
@@ -89,12 +89,12 @@ class Element(Bot):
             teammates.sort(
                 key=lambda p: np.linalg.norm(
                     self.game_state.ball.position - p.car_data.position
-                ) # type: ignore
+                )  # type: ignore
             )
             opponents.sort(
                 key=lambda p: np.linalg.norm(
                     self.game_state.ball.position - p.car_data.position
-                ) # type: ignore
+                )  # type: ignore
             )
 
             # Grab opponent in same "position" as Element relative to it's teammates

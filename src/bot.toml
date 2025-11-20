@@ -1,8 +1,9 @@
+#:schema https://rlbot.org/schemas/agent.json
 [settings]
 loadout_file = "loadout.toml"
 name = "Element"
-run_command = "..\\venv\\Scripts\\python bot.py"
-run_command_linux = "../venv/bin/python bot.py"
+run_command = "uv run bot.py"
+run_command_linux = "uv run bot.py"
 agent_id = "Rangler/Element"
 
 [details]

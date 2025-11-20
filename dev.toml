@@ -1,5 +1,6 @@
+#:schema https://rlbot.org/schemas/match.json
 [rlbot]
-launcher = "steam"
+launcher = "NoLaunch"
 auto_start_bots = true
 
 [mutators]
@@ -10,5 +11,5 @@ config_file = "src/bot.toml"
 team = 0
 
 [[cars]]
-type = "human"
+type = "Human"
 team = 1

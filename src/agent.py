@@ -1,46 +1,76 @@
-from dataclasses import dataclass
-from pathlib import Path
+import os
+import pickle
 
-import numpy as np
-from ncnn import Mat, Net  # type: ignore
+try:
+    import torch
+except ImportError:
+    # If we fail to import torch,
+    # assume we're in a botpack environment
+    import sys
+
+    sys.path.insert(0, "../../torch-archive")
+    import torch
+
+import torch.nn as nn
+import torch.nn.functional as F
 
 
-def load_actor() -> Net:
-    current_folder = Path(__file__).parent
-
-    actor = Net()
-    actor.load_param(str(current_folder / "model.ncnn.param"))
-    actor.load_model(str(current_folder / "model.ncnn.bin"))
-    return actor
-
-
-# This version of a dataclass is optimized for performance
-# frozen is set to True because this class shouldn't be modified after creation
-# slots is set to True to reduce memory usage
-# everything is set to False (other than init) to reduce the amount of code generated
-@dataclass(repr=False, eq=False, match_args=False, frozen=True, slots=True)
 class Agent:
-    state_space: int
+    def __init__(
+        self, state_space: int, action_categoricals: int, action_bernoullis: int
+    ):
+        # Disable cpu parallelization
+        torch.set_num_threads(1)
 
-    actor = load_actor()
+        self.state_space = state_space
+        self.categoricals = action_categoricals
+        self.bernoullis = action_bernoullis
+        self.action_space = self.categoricals + self.bernoullis
 
-    def act(self, state: np.ndarray):
-        # this line is taken from `torch/agent.py`,
-        # with the tensor operations replaced by numpy operations
-        state = state.astype(np.float32).reshape(
+        self.actor = Actor(state_space, self.categoricals, self.bernoullis)
+
+        cur_dir = os.path.dirname(os.path.realpath(__file__))
+        with open(os.path.join(cur_dir, "model.p"), "rb") as file:
+            model = pickle.load(file)
+        self.actor.load_state_dict(model)
+
+    def act(self, state):
+        state = torch.tensor(state, dtype=torch.float).view(
             -1, self.state_space
         )  # 1st dimension is batch number
+        with torch.no_grad():
+            probs = self.actor(state)
 
-        with self.actor.create_extractor() as ex:
-            # the below is taken from `ncnn/model_ncnn.py`
-            ex.input("in0", Mat(state))
-            _, probs_cat = ex.extract("out0")
-            _, probs_ber = ex.extract("out1")
+        probs_cat = probs[0]
+        actions_cat = torch.argmax(probs_cat, dim=2)
 
-        # the below is taken from `torch/agent.py`,
-        # with the tensor operations replaced by numpy operations
-        actions_cat = np.argmax(np.array(probs_cat), axis=2)
-        actions_ber = np.argmax(np.array(probs_ber), axis=2)
+        probs_ber = probs[1]
+        actions_ber = torch.argmax(probs_ber, dim=2)
 
-        actions = np.concatenate([actions_cat, actions_ber], 1)
+        actions = torch.cat([actions_cat, actions_ber], 1).numpy()
         return actions
+
+
+class Actor(nn.Module):
+    def __init__(self, input, categoricals, bernoullis):
+        super(Actor, self).__init__()
+        self.categoricals = categoricals
+        self.bernoullis = bernoullis
+
+        self.fc1 = nn.Linear(input, 256)
+        self.fc2 = nn.Linear(256, 256)
+        self.fc3 = nn.Linear(256, 256)
+        self.fc4 = nn.Linear(256, 256)
+        self.fc5 = nn.Linear(256, 256)
+        self.cat_heads = nn.Linear(256, 3 * categoricals)
+        self.ber_heads = nn.Linear(256, 2 * bernoullis)
+
+    def forward(self, x):
+        x = F.relu(self.fc1(x))
+        x = F.relu(self.fc2(x))
+        x = F.relu(self.fc3(x))
+        x = F.relu(self.fc4(x))
+        x = F.relu(self.fc5(x))
+        cat_output = F.softmax(self.cat_heads(x).view(-1, self.categoricals, 3), dim=2)
+        ber_output = F.softmax(self.ber_heads(x).view(-1, self.bernoullis, 2), dim=2)
+        return (cat_output, ber_output)
