@@ -42,13 +42,9 @@ class Agent:
             probs = self.actor(state)
 
         probs_cat = probs[0]
-        # dist = Categorical(probs_cat)
-        # actions_cat = dist.sample()
         actions_cat = torch.argmax(probs_cat, dim=2)
 
         probs_ber = probs[1]
-        # dist = Categorical(probs_ber)
-        # actions_ber = dist.sample()
         actions_ber = torch.argmax(probs_ber, dim=2)
 
         actions = torch.cat([actions_cat, actions_ber], 1).numpy()
