@@ -42,7 +42,7 @@ Install the normal bot requirements via `pip install -r requirements.txt`.
         1. typing_extensions
 
 1. `pip install pyinstaller`
-1. `pyinstaller --onefile src/bot.py --paths=src --add-data=src/model.p:. --exclude-module=torch --hidden-import=timeit --hidden-import=pickletools --hidden-import=uuid --hidden-import=unittest.mock`
+1. `pyinstaller --onefile src/bot.py --paths=src --add-data=src/model.p:. --exclude-module=torch --hidden-import=timeit --hidden-import=pickletools --hidden-import=uuid --hidden-import=unittest.mock --hidden-import=ctypes.wintypes`
     - This will create a file called `bot.spec` - you may have to remove `*.spec` from `.gitignore` to commit it.
     - If your model is not called `model.p` and inside the `src` folder, you must change the path after `--add-data`.
         HOWEVER, be sure to keep `:.` at the end! It is required for PyInstaller.
